@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+default['haproxy']['enable_default_http'] = true
 default['haproxy']['incoming_address'] = "0.0.0.0"
 default['haproxy']['incoming_port'] = 80
 default['haproxy']['member_port'] = 8080
@@ -33,6 +34,8 @@ default['haproxy']['admin']['address_bind'] = "127.0.0.1"
 default['haproxy']['admin']['port'] = 22002
 default['haproxy']['enable_stats_socket'] = false
 default['haproxy']['stats_socket_path'] = "/var/run/haproxy.sock"
+default['haproxy']['stats_socket_user'] = node['haproxy']['user']
+default['haproxy']['stats_socket_group'] = node['haproxy']['group']
 default['haproxy']['pid_file'] = "/var/run/haproxy.pid"
 
 default['haproxy']['defaults_options'] = ["httplog", "dontlognull", "redispatch"]
@@ -63,3 +66,9 @@ default['haproxy']['source']['target_arch'] = ''
 default['haproxy']['source']['use_pcre'] = false
 default['haproxy']['source']['use_openssl'] = false
 default['haproxy']['source']['use_zlib'] = false
+
+default['haproxy']['listeners'] = {
+  'listen' => {},
+  'frontend' => {},
+  'backend' => {}
+}
