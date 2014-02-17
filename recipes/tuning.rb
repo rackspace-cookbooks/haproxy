@@ -1,8 +1,11 @@
 #
-# Cookbook Name:: haproxy
+# Cookbook Name:: rackspace_haproxy
+#
 # Author:: Guilhem Lettron <guilhem.lettron@youscribe.com>
+# Author:: Christopher Coffey <christopher.coffey@rackspace.com>
 #
 # Copyright 2012, Societe Publica.
+# Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +23,7 @@
 include_recipe "cpu::affinity"
 
 cpu_affinity "set affinity for haproxy" do
-  pid node['haproxy']['pid_file']
+  pid node['rackspace_haproxy']['pid_file']
   cpu 0
   subscribes :set, resources("service[haproxy]"), :immediately
 end

@@ -2,13 +2,13 @@ global
   log 127.0.0.1   local0
   log 127.0.0.1   local1 notice
   #log loghost    local0 info
-  maxconn <%= node['haproxy']['global_max_connections'] %>
+  maxconn <%= node['rackspace_haproxy']['global_max_connections'] %>
   #debug
   #quiet
-  user <%= node['haproxy']['user'] %>
-  group <%= node['haproxy']['group'] %>
-<% if node['haproxy']['enable_stats_socket'] -%>
-  stats socket <%= node['haproxy']['stats_socket_path'] %>
+  user <%= node['rackspace_haproxy']['user'] %>
+  group <%= node['rackspace_haproxy']['group'] %>
+<% if node['rackspace_haproxy']['enable_stats_socket'] -%>
+  stats socket <%= node['rackspace_haproxy']['stats_socket_path'] %>
 <% end -%>
 
 defaults
@@ -21,48 +21,48 @@ defaults
 <% @defaults_options.sort.each do | option | -%>
   option <%= option %>
 <% end -%>
-  balance  <%= node['haproxy']['balance_algorithm'] %>
+  balance  <%= node['rackspace_haproxy']['balance_algorithm'] %>
 
 # Set up application listeners here.
 
 frontend http
-  maxconn <%= node['haproxy']['frontend_max_connections'] %>
-  bind <%= node['haproxy']['incoming_address'] %>:<%= node['haproxy']['incoming_port'] %>
+  maxconn <%= node['rackspace_haproxy']['frontend_max_connections'] %>
+  bind <%= node['rackspace_haproxy']['incoming_address'] %>:<%= node['rackspace_haproxy']['incoming_port'] %>
   default_backend servers-http
 
-<% if node['haproxy']['enable_ssl'] -%>
+<% if node['rackspace_haproxy']['enable_ssl'] -%>
 frontend https
-  maxconn <%= node['haproxy']['frontend_ssl_max_connections'] %>
+  maxconn <%= node['rackspace_haproxy']['frontend_ssl_max_connections'] %>
   mode tcp
-  bind <%= node['haproxy']['ssl_incoming_address'] %>:<%= node['haproxy']['ssl_incoming_port'] %>
+  bind <%= node['rackspace_haproxy']['ssl_incoming_address'] %>:<%= node['rackspace_haproxy']['ssl_incoming_port'] %>
   default_backend servers-https
 <% end -%>
 
 backend servers-http
-<% if node['haproxy']['cookie'] -%>
-  cookie <%= node['haproxy']['cookie'] %> insert indirect nocache
+<% if node['rackspace_haproxy']['cookie'] -%>
+  cookie <%= node['rackspace_haproxy']['cookie'] %> insert indirect nocache
 <% end -%>
 <% @pool_members.each do |member| -%>
-  server <%= member[:hostname] %> <%= member[:ipaddress] %>:<%= node['haproxy']['member_port'] %> weight 1 maxconn <%= node['haproxy']['member_max_connections'] %> check <% if node['haproxy']['cookie'] %>cookie <%= member[:hostname] %><% end %>
+  server <%= member[:hostname] %> <%= member[:ipaddress] %>:<%= node['rackspace_haproxy']['member_port'] %> weight 1 maxconn <%= node['rackspace_haproxy']['member_max_connections'] %> check <% if node['rackspace_haproxy']['cookie'] %>cookie <%= member[:hostname] %><% end %>
 <% end -%>
-<% if node["haproxy"]["httpchk"] -%>
-  option httpchk <%= node["haproxy"]["httpchk"] %>
+<% if node['rackspace_haproxy']['httpchk'] -%>
+  option httpchk <%= node['rackspace_haproxy']['httpchk'] %>
 <% end -%>
 
-<% if node['haproxy']['enable_ssl'] -%>
+<% if node['rackspace_haproxy']['enable_ssl'] -%>
 backend servers-https
   mode tcp
   option ssl-hello-chk
 <%   @pool_members.each do |member| -%>
-  server <%= member[:hostname] %> <%= member[:ipaddress] %>:<%= node['haproxy']['ssl_member_port'] %> weight 1 maxconn <%= node['haproxy']['member_max_connections'] %> check
+  server <%= member[:hostname] %> <%= member[:ipaddress] %>:<%= node['rackspace_haproxy']['ssl_member_port'] %> weight 1 maxconn <%= node['rackspace_haproxy']['member_max_connections'] %> check
 <%   end -%>
-<%   if node["haproxy"]["ssl_httpchk"] -%>
-  option httpchk <%= node["haproxy"]["ssl_httpchk"] %>
+<%   if node['rackspace_haproxy']['ssl_httpchk'] -%>
+  option httpchk <%= node['rackspace_haproxy']['ssl_httpchk'] %>
 <%   end -%>
 <% end -%>
 
-<% if node['haproxy']['enable_admin'] -%>
-listen admin <%= node['haproxy']['admin']['address_bind'] %>:<%= node['haproxy']['admin']['port'] %>
+<% if node['rackspace_haproxy']['enable_admin'] -%>
+listen admin <%= node['rackspace_haproxy']['admin']['address_bind'] %>:<%= node['rackspace_haproxy']['admin']['port'] %>
   mode http
   stats uri /
 <% end -%>
