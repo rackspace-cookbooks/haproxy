@@ -21,7 +21,7 @@
 pool_members = search("node", "role:#{node['rackspace_haproxy']['app_server_role']} AND chef_environment:#{node.chef_environment}") || []
 
 # load balancer may be in the pool
-pool_members << node if node.run_list.roles.include?(node['haproxy']['app_server_role'])
+pool_members << node if node.run_list.roles.include?(node['rackspace_haproxy']['app_server_role'])
 
 # we prefer connecting via local_ipv4 if
 # pool members are in the same cloud
@@ -43,6 +43,7 @@ end
 include_recipe 'haproxy::install_package'
 
 cookbook_file '/etc/default/haproxy' do
+  cookbook node['rackspace_haproxy']['template_cookbook']['haproxy_default']
   source 'haproxy-default'
   owner 'root'
   group 'root'
@@ -51,6 +52,7 @@ cookbook_file '/etc/default/haproxy' do
 end
 
 template "#{node['rackspace_haproxy']['conf_dir']}/haproxy.cfg" do
+  cookbook node['rackspace_haproxy']['template_cookbook']['haproxy_app_lb']
   source 'haproxy-app_lb.cfg.erb'
   owner 'root'
   group 'root'

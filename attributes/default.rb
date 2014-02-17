@@ -51,5 +51,8 @@ default['rackspace_haproxy']['member_max_connections'] = 100
 default['rackspace_haproxy']['frontend_max_connections'] = 2000
 default['rackspace_haproxy']['frontend_ssl_max_connections'] = 2000
 
-default['rackspace_haproxy']['install_method'] = 'package'
 default['rackspace_haproxy']['conf_dir'] = '/etc/haproxy'
+
+default['rackspace_haproxy']['template_cookbook']['haproxy_default'] = 'rackspace_haproxy'
+default['rackspace_haproxy']['template_cookbook']['haproxy_cfg'] = 'rackspace_haproxy'
+default['rackspace_haproxy']['template_cookbook']['haproxy_app_lb'] = 'rackspace_haproxy'
