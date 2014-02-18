@@ -4,10 +4,8 @@ rackspace_haproxy
 
 Description: Installs haproxy and prepares the configuration location.
 
-Requirements
-============
 
-## Platform
+## Platforms supported
 
 * Ubuntu 12.04
 * Redhat 6.x
