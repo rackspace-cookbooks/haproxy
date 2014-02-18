@@ -20,10 +20,10 @@
 # limitations under the License.
 #
 
-include_recipe "cpu::affinity"
+include_recipe 'cpu::affinity'
 
-cpu_affinity "set affinity for haproxy" do
+cpu_affinity 'set affinity for haproxy' do
   pid node['rackspace_haproxy']['pid_file']
   cpu 0
-  subscribes :set, resources("service[haproxy]"), :immediately
+  subscribes :set, resources('service[haproxy]'), :immediately
 end

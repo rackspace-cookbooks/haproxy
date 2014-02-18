@@ -10,5 +10,4 @@ version           '2.0.0'
   supports os
 end
 
-depends           "cpu", ">= 0.2.0"
-
+depends           'cpu', '>= 0.2.0'

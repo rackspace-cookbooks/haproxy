@@ -17,30 +17,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+if Chef::Config[:solo]
+  Chef::Log.warn('This recipe uses search. Chef Solo does not support search.')
+else
+  pool_members = search('node', "role:#{node['rackspace_haproxy']['app_server_role']} AND chef_environment:#{node.chef_environment}") || []
 
-pool_members = search("node", "role:#{node['rackspace_haproxy']['app_server_role']} AND chef_environment:#{node.chef_environment}") || []
+  # load balancer may be in the pool
+  pool_members << node if node.run_list.roles.include?(node['rackspace_haproxy']['app_server_role'])
 
-# load balancer may be in the pool
-pool_members << node if node.run_list.roles.include?(node['rackspace_haproxy']['app_server_role'])
-
-# we prefer connecting via local_ipv4 if
-# pool members are in the same cloud
-pool_members.map! do |member|
-  server_ip = begin
-    if member.attribute?('cloud')
-      if node.attribute?('cloud') && (member['cloud']['provider'] == node['cloud']['provider'])
-         member['cloud']['local_ipv4']
+  # we prefer connecting via local_ipv4 if
+  # pool members are in the same cloud
+  pool_members.map! do |member|
+    server_ip = begin
+      if member.attribute?('cloud')
+        if node.attribute?('cloud') && (member['cloud']['provider'] == node['cloud']['provider'])
+          member['cloud']['local_ipv4']
+        else
+          member['cloud']['public_ipv4']
+        end
       else
-        member['cloud']['public_ipv4']
+        member['ipaddress']
       end
-    else
-      member['ipaddress']
     end
+    { ipaddress: server_ip, hostname: member['hostname'] }
   end
-  {:ipaddress => server_ip, :hostname => member['hostname']}
 end
 
-include_recipe 'haproxy::install_package'
+include_recipe 'rackspace_haproxy::install_package'
 
 cookbook_file '/etc/default/haproxy' do
   cookbook node['rackspace_haproxy']['template_cookbook']['haproxy_default']
@@ -58,14 +61,14 @@ template "#{node['rackspace_haproxy']['conf_dir']}/haproxy.cfg" do
   group 'root'
   mode 00644
   variables(
-    :pool_members => pool_members.uniq,
-    :defaults_options => haproxy_defaults_options,
-    :defaults_timeouts => haproxy_defaults_timeouts
+    pool_members: pool_members.uniq,
+    defaults_options: haproxy_defaults_options,
+    defaults_timeouts: haproxy_defaults_timeouts
   )
   notifies :reload, 'service[haproxy]'
 end
 
 service 'haproxy' do
-  supports :restart => true, :status => true, :reload => true
+  supports restart: true, status: true, reload: true
   action [:enable, :start]
 end

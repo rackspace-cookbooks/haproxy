@@ -37,12 +37,12 @@ template "#{node['rackspace_haproxy']['conf_dir']}/haproxy.cfg" do
   mode 00644
   notifies :reload, 'service[haproxy]'
   variables(
-    :defaults_options => haproxy_defaults_options,
-    :defaults_timeouts => haproxy_defaults_timeouts
+    defaults_options: haproxy_defaults_options,
+    defaults_timeouts: haproxy_defaults_timeouts
   )
 end
 
 service 'haproxy' do
-  supports :restart => true, :status => true, :reload => true
+  supports restart: true, status: true, reload: true
   action [:enable, :start]
 end

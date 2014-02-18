@@ -1,7 +1,7 @@
 def haproxy_defaults_options
   options = node['rackspace_haproxy']['defaults_options']
   if node['rackspace_haproxy']['x_forwarded_for']
-    options.push("forwardfor")
+    options.push('forwardfor')
   end
   return options.uniq
 end

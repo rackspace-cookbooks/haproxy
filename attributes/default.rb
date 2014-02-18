@@ -18,33 +18,33 @@
 # limitations under the License.
 #
 
-default['rackspace_haproxy']['incoming_address'] = "0.0.0.0"
+default['rackspace_haproxy']['incoming_address'] = '0.0.0.0'
 default['rackspace_haproxy']['incoming_port'] = 80
 default['rackspace_haproxy']['member_port'] = 8080
-default['rackspace_haproxy']['app_server_role'] = "webserver"
-default['rackspace_haproxy']['balance_algorithm'] = "roundrobin"
+default['rackspace_haproxy']['app_server_role'] = 'webserver'
+default['rackspace_haproxy']['balance_algorithm'] = 'roundrobin'
 default['rackspace_haproxy']['enable_ssl'] = false
-default['rackspace_haproxy']['ssl_incoming_address'] = "0.0.0.0"
+default['rackspace_haproxy']['ssl_incoming_address'] = '0.0.0.0'
 default['rackspace_haproxy']['ssl_incoming_port'] = 443
 default['rackspace_haproxy']['ssl_member_port'] = 8443
 default['rackspace_haproxy']['httpchk'] = nil
 default['rackspace_haproxy']['ssl_httpchk'] = nil
 default['rackspace_haproxy']['enable_admin'] = true
-default['rackspace_haproxy']['admin']['address_bind'] = "127.0.0.1"
-default['rackspace_haproxy']['admin']['port'] = 22002
+default['rackspace_haproxy']['admin']['address_bind'] = '127.0.0.1'
+default['rackspace_haproxy']['admin']['port'] = 22_002
 default['rackspace_haproxy']['enable_stats_socket'] = false
-default['rackspace_haproxy']['stats_socket_path'] = "/var/run/haproxy.sock"
-default['rackspace_haproxy']['pid_file'] = "/var/run/haproxy.pid"
+default['rackspace_haproxy']['stats_socket_path'] = '/var/run/haproxy.sock'
+default['rackspace_haproxy']['pid_file'] = '/var/run/haproxy.pid'
 
-default['rackspace_haproxy']['defaults_options'] = ["httplog", "dontlognull", "redispatch"]
+default['rackspace_haproxy']['defaults_options'] = %w[httplog dontlognull redispatch]
 default['rackspace_haproxy']['x_forwarded_for'] = false
-default['rackspace_haproxy']['defaults_timeouts']['connect'] = "5s"
-default['rackspace_haproxy']['defaults_timeouts']['client'] = "50s"
-default['rackspace_haproxy']['defaults_timeouts']['server'] = "50s"
+default['rackspace_haproxy']['defaults_timeouts']['connect'] = '5s'
+default['rackspace_haproxy']['defaults_timeouts']['client'] = '50s'
+default['rackspace_haproxy']['defaults_timeouts']['server'] = '50s'
 default['rackspace_haproxy']['cookie'] = nil
 
-default['rackspace_haproxy']['user'] = "haproxy"
-default['rackspace_haproxy']['group'] = "haproxy"
+default['rackspace_haproxy']['user'] = 'haproxy'
+default['rackspace_haproxy']['group'] = 'haproxy'
 
 default['rackspace_haproxy']['global_max_connections'] = 4096
 default['rackspace_haproxy']['member_max_connections'] = 100
