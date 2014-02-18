@@ -1,9 +1,8 @@
-rackspace_haproxy
 
-Description
+rackspace_haproxy
 ===========
 
-Installs haproxy and prepares the configuration location.
+Description: Installs haproxy and prepares the configuration location.
 
 Requirements
 ============
